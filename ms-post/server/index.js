@@ -9,14 +9,17 @@ const posts = [{
   id: 1,
   title: 'Yes 1',
   body: 'Test 1',
+  commentIds: [1,2]
 },{
   id: 2,
   title: 'Yes 2',
   body: 'Test 2',
+  commentIds: []
 },{
   id: 3,
   title: 'Yes 3',
   body: 'Test 3',
+  commentIds: []
 }];
 
 // App
