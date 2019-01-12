@@ -1,44 +1,43 @@
-'use strict';
+const { GraphQLServer } = require('graphql-yoga');
+const asyncHandler = require('express-async-handler');
+const { checkAll } = require('./check');
+const { postQueries } = require('./queries');
+const { postMutations } = require('./mutations');
 
-const express = require('express');
-const asyncHandler = require('express-async-handler')
-const check = require('./check');
+const typeDefs = `
+type Post {
+  id: Int!
+  title: String
+  body: String
+}
 
-// Constants
-const PORT = process.env.PORT || 8080;
+type Query {
+  posts: [Post]
+  post(id: ID!): Post
+}
 
-// App
-const app = express();
+type Mutation {
+  createPost(title: String!, body: String): Post
+  deletePost(id: ID!): Boolean,
+}
+`
 
-app.get('/', asyncHandler(async (req, res) => {
-  console.log('Get req');
+const resolvers = {
+  Query: {
+    posts: async () => postQueries.getAll(),
+    post: async (obj, args, context, info) => postQueries.getById(args.id)
+  },
+  Mutation: {
+    createPost: async (obj, args, context, info) => postMutations.create(args),
+    deletePost: async (obj, args, context, info) => postMutations.deleteById(args.id)
+  }
+}
 
-  const MSAuthStatus = await check.checkMSAuth().then(() => "OK").catch(() => "ERROR");
-  const MSCommentStatus = await check.checkMSComment().then(() => "OK").catch(() => "ERROR");
-  const MSUserStatus = await check.checkMSUser().then(() => "OK").catch(() => "ERROR");
-  const MSPostStatus = await check.checkMSPost().then(() => "OK").catch(() => "ERROR");
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers
+})
 
-  res.send(`
-  <!DOCTYPE html>
-  <html>
-  <head>
-    <title>Check MS</title>
-  </head>
-  <body>
+server.get('/check', asyncHandler(checkAll));
 
-    <h1>Api-Gateway</h1>
-    <h2>Check MS contact</h2>
-    <ul>
-      <li>Auth: ${MSAuthStatus}</li>
-      <li>Comment: ${MSCommentStatus}</li>
-      <li>User: ${MSUserStatus}</li>
-      <li>Post: ${MSPostStatus}</li>
-    </ul>
-  </body>
-  </html>
-
-  `);
-}));
-
-app.listen(PORT);
-console.log(`Listening on port ${PORT}`);
+server.start({ port: 8080 },() => console.log(`The server is running on http://localhost:8080`))
