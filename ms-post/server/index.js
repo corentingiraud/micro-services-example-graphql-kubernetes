@@ -9,7 +9,7 @@ const posts = [{
   id: 1,
   title: 'Yes 1',
   body: 'Test 1',
-  commentIds: [1,2]
+  commentIds: [1]
 },{
   id: 2,
   title: 'Yes 2',
@@ -42,7 +42,6 @@ app.get('/api/v1/posts/:postId(\\d+)', (req, res) => {
 });
 
 app.post('/api/v1/posts', (req, res) => {
-  console.log(req.body);
   const newPost = {
     ...req.body,
     id: posts.length + 1
@@ -59,6 +58,11 @@ app.delete('/api/v1/posts/:postId(\\d+)', (req, res) => {
     res.send();
   }
 });
+
+app.get('/api/v1/comments/:commentId/post', (req, res) => {
+  const post = posts.find(p => p.commentIds.includes(+req.params.commentId));
+  res.send(post);
+})
 
 app.listen(PORT);
 console.log(`Listening on port ${PORT}`);

@@ -7,23 +7,32 @@ const PORT = process.env.PORT || 8080;
 
 const comments = [{
   id: 1,
-  body: "Comment 1"
+  body: "Comment 1",
+  postId: 1
+}, {
+  id: 2,
+  body: "Comment 2",
+  postId: 1
 }];
-
 
 const typeDefs = `
 type Comment {
   id: Int!
-  body: String
+  body: String,
+  postId: ID
 }
 
 type Query {
   comments: [Comment]
+  commentsByPostId(id: ID!): [Comment]
 }
 `
 const resolvers = {
   Query: {
     comments: async () => comments,
+    commentsByPostId: async (obj, args, context, info) => {
+      return comments.filter(c => c.postId === +args.id)
+    },
   },
 }
 

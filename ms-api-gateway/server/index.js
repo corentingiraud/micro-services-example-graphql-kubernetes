@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { checkAll } = require('./check');
 const postSchema = require('./schemas/post');
 const { getSchema } = require('./schemas/comment');
+const { linksTypeDef, linksResolvers } = require('./schemas/links');
 const { mergeSchemas } = require('graphql-tools');
 
 const lunch = async () => {
@@ -10,9 +11,10 @@ const lunch = async () => {
   const globalSchema = mergeSchemas({
     schemas: [
       postSchema,
-      commentSchema
+      commentSchema,
+      linksTypeDef
     ],
-    resolvers: null
+    resolvers: linksResolvers
   });
 
   const server = new GraphQLServer({

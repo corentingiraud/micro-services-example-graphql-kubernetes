@@ -13,6 +13,12 @@ const getById = async function(id) {
   return res.data;
 }
 
+const getByCommentId = async function(id) {
+  const res = await axios.get(`${BASE_URL}/comments/${id}/post`)
+  .catch((err) => handleErrors(err));
+  return res.data || null;
+}
+
 const handleErrors = function(err) {
   throw new Error(err.response.data.message);
 }
@@ -20,4 +26,5 @@ const handleErrors = function(err) {
 module.exports = {
   getAll,
   getById,
+  getByCommentId,
 }
