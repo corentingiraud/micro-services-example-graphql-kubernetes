@@ -1,6 +1,54 @@
 version: '3'
 services:
-  web:
+  api-gateway:
     build: api-gateway/.
     ports:
-     - "80:8080"
+     - "8080:8080"
+    links:
+      - ms-auth
+      - ms-user
+      - ms-comment
+      - ms-post
+    environment:
+      - URL_MS_AUTH=ms-auth
+      - URL_MS_USER=ms-user
+      - URL_MS_COMMENT=ms-comment
+      - URL_MS_POST=ms-post
+    volumes:
+      - "./api-gateway:/srv/app"
+    entrypoint:
+      - npm
+      - run
+      - start:dev
+  ms-auth:
+    build: ms-auth/.
+    volumes:
+      - "./ms-auth:/srv/app"
+    entrypoint:
+      - npm
+      - run
+      - start:dev
+  ms-comment:
+    build: ms-comment/.
+    volumes:
+      - "./ms-comment:/srv/app"
+    entrypoint:
+      - npm
+      - run
+      - start:dev
+  ms-user:
+    build: ms-user/.
+    volumes:
+      - "./ms-user:/srv/app"
+    entrypoint:
+      - npm
+      - run
+      - start:dev
+  ms-post:
+    build: ms-post/.
+    volumes:
+      - "./ms-post:/srv/app"
+    entrypoint:
+      - npm
+      - run
+      - start:dev
