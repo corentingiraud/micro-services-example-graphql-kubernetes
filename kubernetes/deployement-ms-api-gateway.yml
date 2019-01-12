@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: ms-api-gateway
 spec:
   replicas: 2
   minReadySeconds: 15
@@ -16,7 +16,7 @@ spec:
         app: api-gateway
     spec:
       containers:
-        - image: kistora/api-gateway:latest
+        - image: kistora/ms-api-gateway:latest
           imagePullPolicy: Always
           name: api-gateway
           ports:
@@ -24,3 +24,9 @@ spec:
           env:
             - name: URL_MS_AUTH
               value: "ms-auth-lb"
+            - name: URL_MS_COMMENT
+              value: "ms-comment-lb"
+            - name: URL_MS_POST
+              value: "ms-post-lb"
+            - name: URL_MS_USER
+              value: "ms-user-lb"

@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 app.get('/', asyncHandler(async (req, res) => {
+  console.log('Get req');
+
   const MSAuthStatus = await check.checkMSAuth().then(() => "OK").catch(() => "ERROR");
   const MSCommentStatus = await check.checkMSComment().then(() => "OK").catch(() => "ERROR");
   const MSUserStatus = await check.checkMSUser().then(() => "OK").catch(() => "ERROR");
@@ -20,7 +22,7 @@ app.get('/', asyncHandler(async (req, res) => {
   <!DOCTYPE html>
   <html>
   <head>
-    <title>Page Title</title>
+    <title>Check MS</title>
   </head>
   <body>
 

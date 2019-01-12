@@ -4,7 +4,7 @@
   "description": "Features: - Kubernetes ready (local and cloud) - API GateWay (GraphQL API with remote schema) - Auth microservice (REST API): NodeJS - User Microservice (GraphQL API): NodeJS - Posts Microservice (REST API): NodeJS - Comments Microservice (REST API): PHP Symfony",
   "main": "index.js",
   "scripts": {
-    "install-dev-all": "cd api-gateway && npm i && cd ../ms-auth && npm i && cd ../ms-comment && npm i && cd ../ms-post && npm i && cd ../ms-user && npm i"
+    "install-dev-all": "cd ms-api-gateway && npm i && cd ../ms-auth && npm i && cd ../ms-comment && npm i && cd ../ms-post && npm i && cd ../ms-user && npm i"
   },
   "repository": {
     "type": "git",

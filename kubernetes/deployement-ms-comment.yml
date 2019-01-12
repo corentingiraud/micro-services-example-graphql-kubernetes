@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ms-comment
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: ms-comment
+    spec:
+      containers:
+        - image: kistora/ms-comment:latest
+          imagePullPolicy: Always
+          name: ms-comment
+          ports:
+            - containerPort: 8080
